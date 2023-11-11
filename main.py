@@ -5,17 +5,24 @@ from money_machine import MoneyMachine
 money = 0
 coffee_order = True
 
-menu = Menu()
 coffee_maker = CoffeeMaker()
 money_machine = MoneyMachine()
+menu = Menu()
 
 while coffee_order:
-    user_input = input("What would you like? (espresso/latte/cappuccino): ").lower()
+    options = menu.get_items()
+    user_input = input(f"What would you like? ({options}): ").lower()
     if user_input == "off":
         coffee_order = False
     elif user_input == "report":
-        print(coffee_maker.report())
+        coffee_maker.report()
+        money_machine.report()
     else:
-        if coffee_maker.is_resource_sufficient(MenuItem("name")):
+        drink = menu.find_drink(user_input)
+        if coffee_maker.is_resource_sufficient(drink) and money_machine.make_payment(drink.cost):
+            coffee_maker.make_coffee(drink)
+
+
+
 
 
